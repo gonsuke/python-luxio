@@ -18,7 +18,12 @@ HOW TO USE
 
 ::
 
->>> io = luxio.LuxIO('./test')
+>>> import luxio
+>>> io = luxio.LuxIO('test')
 >>> io.put('key', 'value')
+True
 >>> print io.get('key')
+value
 >>> io.delete('key')
+True
+
