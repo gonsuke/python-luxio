@@ -1,0 +1,6 @@
+*~
+*.pyc
+*.bidx
+*.data
+build/
+
