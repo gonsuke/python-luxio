@@ -17,10 +17,11 @@ setup(
     author='Takashi Matsuno',
     author_email='g0n5uk3@gmail.com',
     long_description='''Python extension for Lux IO.''',
+    packages = ['luxio'],
     ext_modules=[
         Extension(
-            "luxio",
-            ["luxio.pyx"],
+            "luxio._luxio",
+            ["luxio/_luxio.pyx"],
             language="c++",
             libraries=['luxio']
         )
