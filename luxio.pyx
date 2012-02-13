@@ -30,12 +30,14 @@ INSERT_APPEND = APPEND
 cdef class LuxIO:
     cdef Btree *bt
     cdef db_index_t index_type
+    cdef db_flags_t db_flag
 
     def __cinit__(self, object db_file_name, db_flags_t db_flag=DB_CREAT, index_type=NONCLUSTER):
         cdef char* _dbname
         cdef Py_ssize_t _dbnamelen
         PyObject_AsReadBuffer(db_file_name, <const_void_ptr*>&_dbname, &_dbnamelen)
 
+        self.db_flag = db_flag
         self.index_type = index_type
         self.bt = new Btree(index_type)
 
@@ -50,9 +52,21 @@ cdef class LuxIO:
         self.bt.close()
         del self.bt
 
+    # def close(self):
+    #     return self.bt.close()
+
+    def enable_bulk_loading(self):
+        self.bt.set_bulk_loading(True)
+
+    def disable_bulk_loading(self):
+        self.bt.set_bulk_loading(False)
+
     def put(self, object key, object value, insert_mode=OVERWRITE):
+        if self.db_flag == DB_RDONLY:
+            raise RuntimeError("DB opened in read-only mode.")
+
         if insert_mode == APPEND and self.index_type != NONCLUSTER:
-            raise ValueError()
+            raise RuntimeError("APPEND operation not permitted in CLUSTER mode.")
 
         cdef char* keybuf
         cdef Py_ssize_t keylen
@@ -76,6 +90,9 @@ cdef class LuxIO:
         return PyBuffer_FromMemory(valbuf, <Py_ssize_t>value.size)
 
     def delete(self, object key):
+        if self.db_flag == DB_RDONLY:
+            raise RuntimeError("DB opened in read-only mode.")
+
         cdef char* keybuf
         cdef Py_ssize_t keylen
         PyObject_AsReadBuffer(key, <const_void_ptr*>&keybuf, &keylen)

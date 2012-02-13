@@ -22,9 +22,6 @@ cdef extern from "luxio/dbm.h" namespace "Lux::IO":
         NOOVERWRITE = 1
         APPEND = 2
 
-    # cdef enum insert_mode_t:
-    #     OVERWRITE, NOOVERWRITE, APPEND
-
     ctypedef struct data_t:
         void *data
         unsigned int size
@@ -35,7 +32,8 @@ cdef extern from "luxio/btree.h" namespace "Lux::IO":
         Btree(db_index_t index_type)
         int open(string db_name, int oflags)
         int close()
-        bool put(void*, uint32_t, void*, uint32_t, insert_mode_t)
+        void set_bulk_loading(bool is_bulk_loading)
+        bool put(void*, uint32_t, void*, uint32_t, insert_mode_t) except +
         data_t *get(void*, uint32_t)
         bool del_(void*, uint32_t)
 
