@@ -23,6 +23,10 @@ HOW TO USE
   >>> io.put('key', 'value')
   True
   >>> io.get('key')
-  value
+  'value'
+  >>> io.append('key', '123')
+  True
+  >>> io.get('key')
+  'value123'
   >>> io.delete('key')
   True
