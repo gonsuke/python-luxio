@@ -22,6 +22,17 @@ cdef extern from "luxio/dbm.h" namespace "Lux::IO":
         NOOVERWRITE = 1
         APPEND = 2
 
+    ctypedef enum store_mode_t:
+        Padded = 0
+        Linked = 1
+
+    ctypedef enum padding_mode_t:
+        NOPADDING = 0
+        FIXEDLEN = 1
+        RATIO = 2
+        BLOCKALIGNED = 3
+        PO2 = 4
+
     ctypedef struct data_t:
         void *data
         unsigned int size
@@ -36,4 +47,4 @@ cdef extern from "luxio/btree.h" namespace "Lux::IO":
         bool put(void*, uint32_t, void*, uint32_t, insert_mode_t) except +
         data_t *get(void*, uint32_t)
         bool del_(void*, uint32_t)
-
+        void set_noncluster_params(store_mode_t, padding_mode_t, uint32_t, uint32_t)

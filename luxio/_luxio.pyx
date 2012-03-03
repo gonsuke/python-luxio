@@ -12,8 +12,7 @@ cdef extern from "Python.h":
     ctypedef char* const_void_ptr "const void*"
     ctypedef struct PyObject
     cdef int PyObject_AsReadBuffer(object o, const_void_ptr* buff, Py_ssize_t* buf_len) except -1
-    cdef int PyObject_AsWriteBuffer(object o, void** buff, Py_ssize_t* buf_len) except -1
-    cdef object PyBuffer_FromMemory(void *ptr, Py_ssize_t size)
+    cdef object PyString_FromStringAndSize(const_char_ptr, Py_ssize_t len)
 
 INDEX_NONCLUSTER = NONCLUSTER
 INDEX_CLUSTER = CLUSTER
@@ -27,12 +26,15 @@ INSERT_OVERWRITE = OVERWRITE
 INSERT_NOOVERWRITE = NOOVERWRITE
 INSERT_APPEND = APPEND
 
+STORE_PADDED = Padded
+STORE_LINKED = Linked
+
 cdef class LuxIO:
     cdef Btree *bt
     cdef db_index_t index_type
     cdef db_flags_t db_flag
 
-    def __cinit__(self, object db_file_name, db_flags_t db_flag=DB_CREAT, index_type=NONCLUSTER):
+    def __cinit__(self, object db_file_name, db_flags_t db_flag=DB_CREAT, index_type=NONCLUSTER, store_mode=Padded):
         cdef char* _dbname
         cdef Py_ssize_t _dbnamelen
         PyObject_AsReadBuffer(db_file_name, <const_void_ptr*>&_dbname, &_dbnamelen)
@@ -43,6 +45,9 @@ cdef class LuxIO:
 
         if not self.bt:
             raise MemoryError()
+
+        if index_type == NONCLUSTER:
+            self.bt.set_noncluster_params(store_mode, PO2, 0, 0)
 
         cdef string dbname
         dbname.assign(_dbname, _dbnamelen)
@@ -86,8 +91,7 @@ cdef class LuxIO:
 
         if value == NULL: return None
 
-        cdef void* valbuf = <void*>value.data
-        return PyBuffer_FromMemory(valbuf, <Py_ssize_t>value.size)
+        return PyString_FromStringAndSize(<const_char_ptr>value.data, <Py_ssize_t>value.size)
 
     def delete(self, object key):
         if self.db_flag == DB_RDONLY:
