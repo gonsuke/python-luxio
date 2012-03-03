@@ -66,6 +66,9 @@ cdef class LuxIO:
     def disable_bulk_loading(self):
         self.bt.set_bulk_loading(False)
 
+    def append(self, object key, object value):
+        return self.put(key, value, APPEND)
+
     def put(self, object key, object value, insert_mode=OVERWRITE):
         if self.db_flag == DB_RDONLY:
             raise RuntimeError("DB opened in read-only mode.")

@@ -1,6 +1,5 @@
 from libcpp cimport *
 from libcpp.string cimport string
-
 from libc.stdint cimport *
 
 cdef extern from "del.h": pass

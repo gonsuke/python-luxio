@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 import luxio
 from nose.tools import *
@@ -15,6 +14,15 @@ def test_luxio_noncluster_append():
     assert io.put('0001', '0001', luxio.INSERT_OVERWRITE) == True
     assert io.get('0001') == u'0001'
     assert io.put('0001', '0001', luxio.INSERT_APPEND) == True
+    assert io.get('0001') == u'00010001'
+    assert io.delete('0001') == True
+    assert io.get('0001') == None
+
+def test_luxio_append():
+    io = luxio.LuxIO('./test', db_flag=luxio.DB_FILE_CREAT, index_type=luxio.INDEX_NONCLUSTER)
+    assert io.put('0001', '0001', luxio.INSERT_OVERWRITE) == True
+    assert io.get('0001') == u'0001'
+    assert io.append('0001', '0001') == True
     assert io.get('0001') == u'00010001'
     assert io.delete('0001') == True
     assert io.get('0001') == None
@@ -67,4 +75,3 @@ def test_luxio_noncluster_append():
 
 def many_append(io, i):
     assert io.put('0001', '0001', luxio.INSERT_APPEND) == True
-
