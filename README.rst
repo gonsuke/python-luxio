@@ -22,7 +22,7 @@ HOW TO USE
   >>> io = luxio.LuxIO('test')
   >>> io.put('key', 'value')
   True
-  >>> print io.get('key')
+  >>> io.get('key')
   value
   >>> io.delete('key')
   True
