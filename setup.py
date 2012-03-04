@@ -6,17 +6,23 @@ classifiers = """
 Development Status :: 1 - Beta
 Intended Audience :: Developers
 Operating System :: OS Independent
-Programming Language :: Python
+Programming Language :: Python :: 2
 Topic :: Software Development :: Libraries
+Topic :: Database
 """
+
+with open('README.rst') as f:
+    long_description = f.read()
 
 setup(
     name='python-luxio',
-    version='0.0.1',
+    version='0.0.2',
+    license='New BSD',
     description='Python extension for Lux IO',
     author='Takashi Matsuno',
     author_email='g0n5uk3@gmail.com',
-    long_description='''Python extension for Lux IO.''',
+    url='https://github.com/gonsuke/python-luxio',
+    long_description=long_description,
     packages = ['luxio'],
     ext_modules=[
         Extension(
