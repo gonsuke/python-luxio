@@ -16,7 +16,7 @@ with open('README.rst') as f:
 
 setup(
     name='python-luxio',
-    version='0.0.2',
+    version='0.0.3',
     license='New BSD',
     description='Python extension for Lux IO',
     author='Takashi Matsuno',
