@@ -1,6 +1,6 @@
 from distutils.core import setup
-from distutils.extension import Extension
 from Cython.Distutils import build_ext
+from Cython.Distutils.extension import Extension
 
 classifiers = """
 Development Status :: 1 - Beta
@@ -27,7 +27,7 @@ setup(
     ext_modules=[
         Extension(
             "luxio._luxio",
-            ["README.rst", "luxio/_luxio.pyx", "luxio/_luxio.pxd", "luxio/del.h"],
+            ["luxio/_luxio.pyx", "luxio/_luxio.pxd"],
             language="c++",
             libraries=['luxio']
         )
