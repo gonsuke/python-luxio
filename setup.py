@@ -27,7 +27,7 @@ setup(
     ext_modules=[
         Extension(
             "luxio._luxio",
-            ["luxio/_luxio.pyx"],
+            ["README.rst", "luxio/_luxio.pyx", "luxio/_luxio.pxd", "luxio/del.h"],
             language="c++",
             libraries=['luxio']
         )
