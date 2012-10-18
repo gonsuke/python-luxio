@@ -7,6 +7,7 @@ Development Status :: 1 - Beta
 Intended Audience :: Developers
 Operating System :: OS Independent
 Programming Language :: Python :: 2
+Programming Language :: Python :: 3
 Topic :: Software Development :: Libraries
 Topic :: Database
 """
@@ -16,7 +17,7 @@ with open('README.rst') as f:
 
 setup(
     name='python-luxio',
-    version='0.0.3',
+    version='0.0.4',
     license='New BSD',
     description='Python extension for Lux IO',
     author='Takashi Matsuno',
