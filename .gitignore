@@ -3,4 +3,4 @@
 *.bidx
 *.data
 build/
-
+.tox/
